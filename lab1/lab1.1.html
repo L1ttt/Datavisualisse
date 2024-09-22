@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/asset/style.css">
+</head>
+<body>
+    <h1>Pets and the Pandemic</h1>
+    <p>A report from Animal Medicines Australia (AMA) has found that many Australians took the opportunity to introduce a pet into their household during the pandemic. Their survey indicated that there was a significant increase in the percent of households taking in a new dog, fish or bird. Their research also indicated that pets had a number of positive influences on their lives such as:</p>
+    <ul>
+        <li>companionship</li>
+        <li>better mental health</li>
+        <li>joy and happiness.
+        </li>
+    </ul>
+
+    <p>With the increase in pet ownership the AMA are encouraging policy makers to consider the needs of companion animals and their owners when considering rental, strata and body corporate regulations are well as accepting animals in public places and transport.</p>
+    <p><button id="2019" onclick= pets2019()>2019</button> <button id="2021" onclick= pets2021()>2021</button>  <button id="both" onclick= both()>Both</button></p>
+
+    <img id="graph" src="/asset/pet_ownership_in_australia_table.png" alt="">
+    
+    <script>
+     function pets2019(){
+        document.getElementById('graph')
+        .src="/asset/pets2019.png";
+     }   
+     function pets2021(){
+        document.getElementById('graph')
+        .src="/asset/pets2021.png";
+     }   
+     function both(){
+        document.getElementById('graph')
+        .src="/asset/pet_ownership_in_australia_table.png";
+     }   
+
+    </script>
+
+    <footer>COS30045 Data Visualisation</footer>
+
+</body>
+</html>
