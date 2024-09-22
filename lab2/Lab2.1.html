@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <h1>The D3 Journey start here.....</h1>
+    <script>
+        var dataset = [1,3,11,20,25];
+
+        d3.select("body").selectAll("p")
+        .data(dataset)
+        .enter()
+        .append("p")
+        .text(function(d){
+            if (d < 10) {
+            return "Joe watched "+ d + " cat videos today.";
+            }
+            else{
+
+              return "Warning: Joe watched "+ d + " cat videos today.";
+            }
+        });
+
+    </script>
+</body>
+</html>
