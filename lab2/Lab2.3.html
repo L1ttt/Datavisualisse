@@ -9,8 +9,8 @@
 <body>
     <h1>The D3 Journey starts here...</h1>
     <script>
-        var w = 1000;
-        var h = 1000;
+        var w = 600;
+        var h = 100;
         var dataset = [
                         [5,20],
                         [480,90],
@@ -31,7 +31,7 @@
         .attr("cx",function(d,i){
             return d[0];})
         .attr("cy",function(d){
-            return d[1];
+            return h-d[1];
         })
         .attr("r",5)
         .attr("fill", "slategrey");
@@ -43,7 +43,7 @@
         .attr("x",function(d,i){
             return d[0];})
             .attr("y",function(d){
-            return d[1]+20;
+            return h-d[1]+20;
         })
         .text(function(d){
             return d[0]+ ","+d[1];
