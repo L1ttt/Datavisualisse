@@ -45,18 +45,14 @@
                     dataset.push(newNumber);
                     xScale.domain(d3.range(dataset.length));
                 
-                var bar = svg.selectAll("rect")
+                var bars = svg1.selectAll("rect")
                     .data(dataset)
-                    .enter()
-                    .append("rect")
-                    .merge(bars)
-                    .transition()
-                    .duration(500)
-                    .attr("x", function(d,i){
-                        return xScale(i)
-                    })
-                    
-                    
+                    bars.enter()
+                        .append("rect")
+                         .merge(bars)
+                          .transition()
+                         .duration(500)
+                         .attr("x", w)           
                     .attr("y",function(d){
                         return  h-yScale(d);
         })
