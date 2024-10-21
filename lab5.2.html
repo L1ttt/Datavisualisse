@@ -50,7 +50,12 @@
                 }
                 svg.selectAll("rect")
                     .data(dataset)
-                    
+                    .transition()
+                    .delay(function(d, i){
+                        return i * 100;
+                    })
+                    .duration(2000)
+                    .ease(d3.easeCubicInOut)
                     
             
                     .attr("y",function(d){

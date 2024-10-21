@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,7 @@
     <script>
         var w = 500;
         var h = 500;
-        var dataset = [25, 5, 10, 12, 9];
+        var dataset = [25, 5, 10, 12, 1];
         var xScale = d3.scaleBand()
                         .domain(d3.range(dataset.length))
                         .rangeRound([0,w])
@@ -41,22 +41,26 @@
         });
         d3.select("button")
             .on("click",function(){
-                
-                var numValues = 5;
-                 dataset = []
-                for(var i = 0; i< numValues;i++){
                     var newNumber = Math.floor(Math.random()*25);
                     dataset.push(newNumber);
-                }
-                svg.selectAll("rect")
+                    xScale.domain(d3.range(dataset.length));
+                
+                var bar = svg.selectAll("rect")
                     .data(dataset)
+                    .enter()
+                    .append("rect")
+                    .merge(bars)
+                    .transition()
+                    .duration(500)
+                    .attr("x", function(d,i){
+                        return xScale(i)
+                    })
                     
                     
-            
                     .attr("y",function(d){
                         return  h-yScale(d);
         })
-
+                    .attr("width", xScale.bandwidth())
                     .attr("height", function(d){
                         return yScale(d);
                         });
