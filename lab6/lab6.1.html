@@ -1,4 +1,3 @@
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -31,6 +30,26 @@
         .data(dataset)
         .enter()
         .append("rect")
+        .attr("fill","slategrey")
+        //Mouse in
+        .on("mouseover",function(event,d){
+            var xPosition = parseFloat(d3.select(this).attr("x"))
+            var yPosition = parseFloat(d3.select(this).attr("y"))
+            d3.select(this)
+                .attr("fill","orange")
+                svg.append("text")
+               .attr("id","tooltip")
+               .attr("x",xPosition)
+               .attr("y",yPosition)
+               .text(d);
+        })
+        //Mouse out
+        .on("mouseout", function(d){
+            d3.select(this)
+                .attr("fill","slategrey")
+            d3.select("#tooltip").remove();
+            
+        })
         .attr("x",function(d,i){return i* (w/dataset.length);})
         .attr("y",function(d){
             return  h-yScale(d);
