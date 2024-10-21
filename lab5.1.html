@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <h1>The D3 Journey starts here...<p> <button>Update</button></p></h1>
+   
+    <script>
+        var w = 500;
+        var h = 500;
+        var dataset = [25, 5, 10, 12, 9];
+        var xScale = d3.scaleBand()
+                        .domain(d3.range(dataset.length))
+                        .rangeRound([0,w])
+                        .paddingInner(0.05); //padding 5% bandwidth
+        var yScale = d3.scaleBand()
+                        .domain(d3.range(d3.max(dataset,function(d){
+                            return d+10;
+                        })))
+                        .rangeRound([0,h]);
+        var svg = d3.select("body")
+        .append("svg")
+        .attr("width", w)
+        .attr("height",h)
+
+        svg.selectAll("rect")
+        .data(dataset)
+        .enter()
+        .append("rect")
+        .attr("x",function(d,i){return i* (w/dataset.length);})
+        .attr("y",function(d){
+            return  h-yScale(d);
+        })
+        .attr("width",xScale.bandwidth())
+        .attr("height", function(d){
+            return yScale(d);
+        });
+        d3.select("button")
+            .on("click",function(){
+                svg.selectAll("*").remove();
+                var numValues = 5;
+                 dataset = []
+                for(var i = 0; i< numValues;i++){
+                    var newNumber = Math.floor(Math.random()*25);
+                    dataset.push(newNumber);
+                }
+                svg.selectAll("rect")
+                    .data(dataset)
+                    .enter()
+                    .append("rect")
+                    .attr("x",function(d,i){return i* (w/dataset.length);})
+                    .attr("y",function(d){
+                        return  h-yScale(d);
+        })
+                    .attr("width",xScale.bandwidth())
+                    .attr("height", function(d){
+                        return yScale(d);
+                        });
+                        
+
+            });
+        
+        
+
+    </script>
+    
+</body>
+</html>
