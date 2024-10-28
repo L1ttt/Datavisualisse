@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+   <link rel="stylesheet" href="/lab7/lab7.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+</head>
+<body>
+    <h1>The D3 Journey starts here...</h1>
+    
+    <p id="chart"></p>
+    <footer>COS30045 Data Visualisation <br>
+        Joe Bloggs
+    </footer>
+    <script>
+        function init(){
+        var w = 600;
+        var h = 300;
+        var p = 50;
+        var dataset
+            d3.csv("Unemployment_78-95.csv", function(d) {
+            return{
+                date: new Date(+d.year, +d.month-1),
+                number: +d.number
+            };
+        }).then (function(data){
+            console.table(dataset,["date","number"]);
+            console.log(data)
+            dataset = data;
+            lineChart(dataset);
+            
+        });
+
+
+function lineChart(){
+        
+
+        xScale = d3.scaleTime()
+                    .domain([
+                        d3.min(dataset, function(d){return d.date;}),
+                        d3.max(dataset, function(d) {return d.date;})
+                    ])
+                    .range([p,w-p]);
+        yScale = d3.scaleLinear()
+                    .domain([0,d3.max(dataset,function(d){return d.number;})])  
+                    .range([h-p,p]);
+     line = d3.line()
+                .x(function(d) {return xScale(d.date);})
+                .y(function(d) {return yScale(d.number);});   
+                var svg = d3.select("#chart")
+                            .append("svg")
+                            .attr("width", w)
+                            .attr("height",h)
+                    svg.append("path")
+                        .datum(dataset)
+                        .attr("class","line")
+                        .attr("d",area);
+                        
+        //axis
+        var xAxis = d3.axisBottom()
+                      .scale(xScale);
+        svg.append("g")
+            .attr("transform","translate(0,"+(h-p)+")")
+            .call(xAxis); 
+
+            
+            var yAxis = d3.axisLeft()
+            .scale(yScale);
+        svg.append("g")
+            .attr("transform","translate("+(p)+",0)")
+            .call(yAxis); 
+
+        //annotations
+        svg.append("line")
+            .attr("class","line halfMilMark")
+            .attr("x1",p)
+            .attr("y1",yScale(500000))
+            .attr("x2", w)
+            .attr("y2", yScale(500000));
+        
+        svg.append("text")
+            .attr("class", "halfMilLabel")
+            .attr("x", p+10)
+            .attr("y",yScale(500000)-7)
+            .text("Half a million unemployed")
+        }
+        //  area chart
+        area = d3.area()
+             
+                .x(function(d){
+                    return xScale(d.date);
+                })                    
+                .y0(function(){
+                    return yScale.range()[0];
+                })
+                .y1(function(d){
+                    return yScale(d.number);
+                })
+               
+    };
+
+window.onload = init;
+    
+    </script>
+</body>
+</html>

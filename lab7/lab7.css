@@ -1,0 +1,16 @@
+.line{
+    fill: rgb(167, 167, 235);
+    stroke: slategrey;
+    stroke-width: 0.5;
+}
+.halfMilMark{
+    
+    fill:none;
+    stroke: red;
+    stroke-dasharray:10,5;
+}
+.halfMilLabel{
+    stroke:red;
+    
+}
+.area{}
