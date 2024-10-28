@@ -1,0 +1,119 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <h1>The D3 Journey starts here...<p> <button id="add">Add</button><button id="remove">Remove</button> <button id="sort">Sort</button> </p></h1>
+   
+    <script>
+        var w = 500;
+        var h = 500;
+        var dataset = [25, 5, 10, 12, 1];
+
+        var xScale = d3.scaleBand()
+                        .domain(d3.range(dataset.length))
+                        .rangeRound([0,w])
+                        .paddingInner(0.05); //padding 5% bandwidth
+        var yScale = d3.scaleBand()
+                        .domain(d3.range(d3.max(dataset,function(d){
+                            return d+10;
+                        })))
+                        .rangeRound([0,h]);
+        var svg = d3.select("body")
+        .append("svg")
+        .attr("width", w)
+        .attr("height",h)
+
+        svg.selectAll("rect")
+        .data(dataset)
+        .enter()
+        .append("rect")
+        .attr("fill","slategrey")
+        //Mouse in
+        .on("mouseover",function(event,d){
+            var xPosition = parseFloat(d3.select(this).attr("x"))
+            var yPosition = parseFloat(d3.select(this).attr("y"))
+            d3.select(this)
+                .attr("fill","orange")
+                svg.append("text")
+               .attr("id","tooltip")
+               .attr("x",xPosition)
+               .attr("y",yPosition)
+               .text(d);
+        })
+        //Mouse out
+        .on("mouseout", function(d){
+            d3.select(this)
+                .attr("fill","slategrey")
+            d3.select("#tooltip").remove();
+            
+        })
+        .attr("x",function(d,i){return i* (w/dataset.length);})
+        .attr("y",function(d){
+            return  h-yScale(d);
+        })
+        .attr("width",xScale.bandwidth())
+        .attr("height", function(d){
+            return yScale(d);
+        });
+        d3.select("#add")
+            .on("click",function(){
+                    
+                    var newNumber = Math.floor(Math.random()*25);
+                    dataset.push(newNumber);
+                    xScale.domain(d3.range(dataset.length));
+            var bars = svg.selectAll("rect")
+                            .data(dataset)
+                           bars.enter()
+                            .append("rect")
+                            .merge(bars)
+                            .transition()
+                            .duration(500)
+                            
+                            .attr("x",function(d,i){
+                                return xScale(i);
+                            })
+                            .attr("y", function(d){
+                                return h-yScale(d); 
+                             })
+                             .attr("width",xScale.bandwidth())
+                             .attr("height",function(d){
+                                return yScale(d);
+                             })
+                            })
+                d3.selectAll("#remove")
+                    .on("click",function(){
+                
+                dataset.shift();
+                var bars = svg.selectAll("rect")
+                .data(dataset)
+                bars.enter()
+                .append("rect")
+            bars.exit()
+                .transition()
+                .duration(500)
+                .attr("x",w)
+                .remove();
+            });
+            d3.selectAll("#sort")
+            .on("click",function(){
+        var sortBars = function(){
+            svg.selectAll("rect")
+                .sort(function(a,b){
+            return d3.ascending(a,b);
+                })
+                .attr("x", function(d,i){
+                    return xScale(i)
+                });
+            };
+            })
+        
+    </script>
+            
+           
+    
+</body>
+</html>
