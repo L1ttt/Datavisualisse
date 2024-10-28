@@ -28,8 +28,9 @@
             };
         }).then (function(data){
             console.table(dataset,["date","number"]);
-            console.log(data)
+        
             dataset = data;
+            console.log(data)
             lineChart(dataset);
             
         });
@@ -67,7 +68,7 @@ function lineChart(){
             .call(xAxis); 
 
             
-            var yAxis = d3.axisLeft()
+        var yAxis = d3.axisLeft()
             .scale(yScale);
         svg.append("g")
             .attr("transform","translate("+(p)+",0)")

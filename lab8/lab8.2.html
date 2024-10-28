@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        
+        .city {
+            fill: red; 
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <h1>The D3 Journey starts here...</h1>
+   
+    <script>
+var w = 500;
+var h = 300;
+d3.csv("vic_LGA_unemployment.csv").then(data=>{
+    data.forEach(d => {
+        d.unemployed = +d.unemployed;
+        var colorScale = d3.scaleQuantize()
+                            .range([0,1000])
+                            .domain([0, d3.max(data, d => d.unemployed)]);
+    });
+})
+var projection = d3.geoMercator()
+                    .center([145,-36.5])
+                    .translate([w / 2, h / 2])
+                    .scale(2450);
+var path =  d3.geoPath()
+                .projection(projection);
+var svg = d3.select("body")
+            .append("svg")
+            .attr("width",w)
+            .attr("height",h)
+            
+           
+d3.json("LGA_VIC.json").then(function(json){
+
+        svg.selectAll("path")
+            .data(json.features)
+            .enter()
+            .append("path")
+            .attr("d",path)
+            .attr("fill",d=>{
+                var regionData = data.find(region => region.id === d.properties.id); 
+                return regionData ? colorScale(regionData.unemployed) : "#ccc"; 
+            })
+            .attr("stroke", "#333");
+    });   
+    d3.json("us-states.json", function(json){
+        for(var i=1;i<data.length;i++){
+            var dataStage = data[i].stage;
+            var dataValue = parseFloat(data[i].value);
+            for(varj=0;j<json.feature.length;j++){
+                var jsonStage = json.feature[j].properties.name;
+                if(dataStage==jsonStage){
+                    json.features[j].properties.value=dataValue;
+                    break;
+                }
+            }
+        }
+    } )
+    d3.csv("VIC_city.csv").then(cityData => {
+                    
+                    svg.selectAll("circle")
+                        .data(cityData)
+                        .enter()
+                        .append("circle")
+                        .attr("class", "city")
+                        .attr("r", 5) 
+                        .attr("cx", d => projection([+d.longitude, +d.latitude])[0]) 
+                        .attr("cy", d => projection([+d.longitude, +d.latitude])[1]);
+    })
+
+    </script>
+    </body>
+    </html>
